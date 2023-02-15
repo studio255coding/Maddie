@@ -16,9 +16,7 @@ scene.add(cube1)
 
 var light = new THREE.PointLight(new THREE.Color("red"), 1, 500)
 light.position.set(10, 12, 25)
-scene.add(light)
-
-renderer.render(scene, camera )
+scene.add(light) 
 
 
 
@@ -28,45 +26,24 @@ renderer.render(scene, camera )
 
 
 
+var render = function(){
+    requestAnimationFrame(render)
+renderer.render(scene, camera)
+}
+
+render();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+document.body.onkeydown = function(evt){
+if(evt.keyCode==87){
+    var direction = new THREE.Vector3();
+camera.getWorldDirection(direction)
+camera.position.add(direction) 
+}
+if(evt.keyCode==40){
+    var direction = new THREE.Vector3();
+    camera.getWorldDirection(direction)
+    camera.position.sub(direction) 
+    }
+}
 
