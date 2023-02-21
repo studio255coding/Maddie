@@ -34,6 +34,22 @@ renderer.render(scene, camera)
 render();
 
 
+
+document.body.requestPointerLock = document.body.requestPointerLock ||
+                                    document.body.mozRequestPointerLock;
+        document.exitPointerLock = document.exitPointerLock ||
+                                   document.mozExitPointerLock;
+        document.body.onclick = function() {
+          document.body.requestPointerLock();
+        };
+        
+
+
+document.body.onmousemove = function(evt) {
+    camera.rotation.y-=evt.movementX/65;
+  };
+
+
 document.body.onkeydown = function(evt){
 if(evt.keyCode==87){
     var direction = new THREE.Vector3();
