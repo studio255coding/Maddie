@@ -1,3 +1,11 @@
+const socket = io("ws://204.110.223.239:8080")
+
+var clientRefreshRate = 10
+
+setInterval(function(){
+    socket.emit("gameDataFromHost", JSON.stringify(scene))
+}, clientRefreshRate)
+
 
 var scene = new THREE.Scene()
 
@@ -134,3 +142,23 @@ if(evt.keyCode==40){
 
 
 
+
+var geometry = new THREE.BoxGeometry(0.3, 0.7, 0.3); 
+var material = new THREE.MeshLambertMaterial({color: "red"}); 
+var hostPlayer = new THREE.Mesh(geometry, material);
+hostPlayer.position.x = camera.position.x
+hostPlayer.position.y = camera.position.y
+hostPlayer.position.z = camera.position.z
+scene.add(hostPlayer);
+
+
+
+var geometry = new THREE.BoxGeometry(0.3, 0.7, 0.3); 
+var material = new THREE.MeshLambertMaterial({color: "blue"}); 
+var otherPlayer = new THREE.Mesh(geometry, material);
+scene.add(otherPlayer);
+socket.on("updatedPlayerPos", data => {
+otherPlayer.position.x = data.x
+otherPlayer.position.y = data.y
+otherPlayer.position.z = data.z
+})
