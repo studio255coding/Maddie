@@ -15,6 +15,24 @@ var cube1 = new THREE.Mesh(geometry, material)
 cube1.rotation.y =45;
 scene.add(cube1)
 
+var geometry = new THREE. BoxGeometry(1, 1, 1) 
+var material = new THREE.MeshLambertMaterial({color: "green"})
+var player = new THREE.Mesh(geometry, material)
+player.rotation.y =45;
+scene.add(player)
+
+var geometry = new THREE. BoxGeometry(30, 1, 30) 
+var material = new THREE.MeshLambertMaterial({color: "green"})
+var ground = new THREE.Mesh(geometry, material)
+scene.add(ground)
+
+
+var geometry = new THREE. BoxGeometry(30, 1, 30) 
+var material = new THREE.MeshLambertMaterial({color: "green"})
+var ground2 = new THREE.Mesh(geometry, material)
+ground2.position.z = -30
+scene.add(ground2)
+
 var geometry = new THREE.BoxGeometry(0.5, 7, 0.5); 
 var material = new THREE.MeshLambertMaterial({color: "brown"}); 
 var treetrunk = new THREE.Mesh(geometry, material);
@@ -42,7 +60,7 @@ var nbmOfHills = 3;
 for(var i=0; i<nbmOfHills; i++){
   for(var j=-2; j<4; j+=0.1){
     var geometry = new THREE.BoxGeometry(30, 1, 1); 
-    var material = new THREE.MeshLambertMaterial({color: 0xFFCC00}); 
+    var material = new THREE.MeshLambertMaterial({color: "green"}); 
     var hill = new THREE.Mesh(geometry, material);
     hill.position.set(0, Math.sin(j), ((i*10)+j)-10)
     scene.add(hill);
@@ -66,7 +84,8 @@ var downDirection = new THREE.Vector3( 0, -1, 0)
 var gravity = 0.2
 var timePassed=0;
 var render = function() {
-  light.position.set(0, Math.sin(timePassed)*30, Math.cos(timePassed)*30)
+  player.position.set(camera.position.x, camera.position.z+1)
+  light.position.set(0, Math.abs(Math.sin(timePassed)*30), Math.abs(Math.cos(timePassed-30)))
   sun.position.set(light.position.x, light.position.y+3, light.position.z)
   raycaster.set(camera.position, downDirection);
     var intersects = raycaster.intersectObjects(scene.children)
@@ -108,10 +127,25 @@ document.body.onmousemove = function(evt) {
 
 document.body.onkeydown = function(evt){
 if(evt.keyCode==87){
+  var raycaster = new THREE.Raycaster();
+  var direction = new THREE.Vector3();
+    camera.getWorldDirection( direction );
+    raycaster.set(camera.position, direction);
+          var intersects = raycaster.intersectObjects(scene.children);
+          if(intersects.length>0) {
+            if(intersects[0].distance<2) {
+            } else {
     var direction = new THREE.Vector3();
 camera.getWorldDirection(direction)
 camera.position.add(direction) 
 camera.position.add(direction) 
+            }
+          } else {
+            var direction = new THREE.Vector3();
+            camera.getWorldDirection(direction)
+            camera.position.add(direction) 
+            camera.position.add(direction) 
+          }
 }
 if(evt.keyCode==40){
     var direction = new THREE.Vector3();
